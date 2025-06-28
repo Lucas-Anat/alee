@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Player com Slideshow e Corações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Garante que o body ocupe a tela inteira */
+            position: relative;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Conteúdo principal em camada baixa */
+        }
+
+        .spotify-player {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .spotify-player iframe {
+            width: 100%;
+            height: 80px; /* Altura fixa para o player */
+        }
+
+        .slideshow {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            height: 640px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 1; /* Slideshow na mesma camada do conteúdo */
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 15px 0 10px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Estilo dos corações */
+        .heart {
+            position: fixed; /* Mudado para fixed para evitar interferência no layout */
+            font-size: 24px;
+            user-select: none;
+            z-index: 10; /* Corações acima de tudo */
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0.5;
+            }
+        }
+
+        /* Media query para responsividade */
+        @media (max-width: 400px) {
+            .slideshow {
+                max-width: 100%; /* Ajusta o slideshow em telas menores */
+                height: auto; /* Mantém proporção */
+                aspect-ratio: 9 / 16; /* Garante proporção 9:16 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Spotify Embed Player com Autoplay -->
+        <div class="spotify-player">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5wG7UpUik9lpxUWjQFadPo" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <!-- Slideshow -->
+        <div class="slideshow">
+            <div class="slide">
+                <img src="imagens/1.jpg" alt="Foto 1">
+            </div>
+            <div class="slide">
+                <img src="imagens/2.jpg" alt="Foto 2">
+            </div>
+            <div class="slide">
+                <img src="imagens/3.jpg" alt="Foto 3">
+            </div>
+            <div class="slide">
+                <img src="imagens/4.jpg" alt="Foto 4">
+            </div>
+             <div class="slide">
+                <img src="imagens/5.jpg" alt="Foto 5">
+            </div>
+             <div class="slide">
+                <img src="imagens/6.jpg" alt="Foto 4">
+            </div>
+        </div>
+        <h1>Ale</h1>
+        <p>
+            Sempre duvidei desses clichês, que dizem que quando a gente menos espera, a pessoa certa aparece, mas conheci você, que é muito mais que aquilo que eu queria, é também aquilo que eu precisava. Você não sabe, nem imagina, mas trouxe de volta muitas coisas que já não existiam mais em mim, trouxe de volta sonhos, vontades, dividiu comigo a maneira linda de ver a vida, me fez planejar um futuro, querer ser alguém melhor. 
+Amo nosso jeito, nossas conversas, nossas risadas, nossos momentos, nossas recordações para os nossos futuros filhos.
+Estar com você é bom demais, me sinto o homem mais sortudo de todos, como se estivesse vivendo todas as coisas que pareciam ser só letras de pagodes, até porque quando estou com você tenho certeza que, Por você, valeu a pena ter amores passados, também valeu a pena ter me enganado, e
+Por você, a segurança do meu mundo por nada eu posso até ser o acostamento da estrada! Por você, escuto aquela mesma história de novo, Te deixo o melhor pedaço do bolo! Me escondo, só pra ter ver aparecer. E junto com essa certeza, também logo vem o sentimento de que, AINDA BEM  que te encontrei, agora sou mais feliz, Igual você não tem, me trata bem, Do jeito que eu sempre quis!
+        </p>
+        </div>
+
+    <script>
+        // Controle do slideshow (apenas imagens)
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Inicia o slideshow
+        showSlide(currentSlide);
+        setInterval(nextSlide, 5000); // Muda a cada 5 segundos
+
+        // Efeito de corações caindo
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw'; // Posição aleatória na largura
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // Duração entre 2 e 5 segundos
+            document.body.appendChild(heart);
+
+            // Remove o coração após a animação
+            setTimeout(() => {
+                heart.remove();
+            }, 5000); // Tempo suficiente para a animação completar
+        }
+
+        // Gera corações a cada 300ms
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
